@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -68,12 +69,15 @@ public class MainActivity extends ActionBarActivity {
         int result = -1;
         try {
             Log.d(LOG_TAG, "Try to get result");
-            result = mt.get();
+            result = mt.get(1, TimeUnit.SECONDS);
             Log.d(LOG_TAG, "get returns " + result);
             Toast.makeText(this, "get returns " + result, Toast.LENGTH_LONG).show();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            Log.d(LOG_TAG, "get timeout, result = " + result);
             e.printStackTrace();
         }
     }
